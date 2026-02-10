@@ -3,16 +3,19 @@ package com.jmeskini.pricing_api.infrastructure.web;
 import com.jmeskini.pricing_api.domain.PriceNotFoundException;
 import java.time.LocalDateTime;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
+@Slf4j
 public class ApiExceptionHandler {
 
     @ExceptionHandler(PriceNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleNotFound(PriceNotFoundException ex) {
+        log.warn("Price not found: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Map.of(
                         "timestamp", LocalDateTime.now().toString(),

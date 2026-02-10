@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pricing API Docs</title>
+    <link href="https://unpkg.com/swagger-ui-dist/swagger-ui.css" rel="stylesheet"/>
+    <style>
+      body { margin: 0; background: #f5f7fb; }
+      #swagger-ui { max-width: 1200px; margin: 0 auto; }
+    </style>
+  </head>
+  <body>
+    <div id="swagger-ui"></div>
+    <script>
+      window.onload = () => {
+        window.ui = SwaggerUIBundle({
+          url: "openapi.json",
+          dom_id: "#swagger-ui",
+          deepLinking: true,
+          displayRequestDuration: true,
+          presets: [SwaggerUIBundle.presets.apis],
+          layout: "BaseLayout"
+        });
+      };
+    </script>
+  </body>
+</html>
