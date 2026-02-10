@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Pricing API Docs</title>
-    <link href="https://unpkg.com/swagger-ui-dist/swagger-ui.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css" rel="stylesheet"/>
+    <link href="https://unpkg.com/swagger-ui-dist@5/swagger-ui.css" rel="stylesheet"/>
     <style>
       body { margin: 0; background: #f5f7fb; }
       #swagger-ui { max-width: 1200px; margin: 0 auto; }
@@ -13,15 +14,48 @@
   <body>
     <div id="swagger-ui"></div>
     <script>
+      const loadScript = (src, onload, onerror) => {
+        const script = document.createElement("script");
+        script.src = src;
+        script.async = true;
+        script.onload = onload;
+        script.onerror = onerror;
+        document.head.appendChild(script);
+      };
+
       window.onload = () => {
-        window.ui = SwaggerUIBundle({
-          url: "openapi.json",
-          dom_id: "#swagger-ui",
-          deepLinking: true,
-          displayRequestDuration: true,
-          presets: [SwaggerUIBundle.presets.apis],
-          layout: "BaseLayout"
-        });
+        const startUi = () => {
+          if (!window.SwaggerUIBundle) {
+            document.getElementById("swagger-ui").innerHTML =
+              "<p>Swagger UI failed to load. Check CDN access and console errors.</p>";
+            return;
+          }
+          window.ui = SwaggerUIBundle({
+            url: "openapi.json",
+            dom_id: "#swagger-ui",
+            deepLinking: true,
+            displayRequestDuration: true,
+            presets: [SwaggerUIBundle.presets.apis],
+            layout: "BaseLayout"
+          });
+        };
+
+        loadScript(
+          "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js",
+          startUi,
+          () => loadScript(
+            "https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js",
+            startUi,
+            () => loadScript(
+              "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.17.14/swagger-ui-bundle.min.js",
+              startUi,
+              () => {
+                document.getElementById("swagger-ui").innerHTML =
+                  "<p>Swagger UI failed to load from CDN. Check network/CSP.</p>";
+              }
+            )
+          )
+        );
       };
     </script>
   </body>
