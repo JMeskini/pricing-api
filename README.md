@@ -51,18 +51,6 @@ Swagger UI is available at:
 
 - `https://pricing-api.netlify.app/`
 
-
-
-## Deploy Swagger UI
-
-You can deploy a static Swagger UI site from `docs/swagger` (already prepared) to Netlify or any static host.
-
-Steps:
-
-1. Make sure `docs/swagger/openapi.json` matches the current API.
-2. Configure the site to publish from `docs/swagger`.
-3. Deploy.
-
 ## Decisions
 
 - I kept a simple surrogate `id` in the `prices` table to keep the JPA mapping straightforward while keeping the business keys (`brandId`, `productId`, date range) intact.
