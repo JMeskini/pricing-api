@@ -16,7 +16,7 @@ class FindApplicablePriceServiceTest {
     @Test
     @DisplayName("Returns the matching price for the requested application date")
     void returnsPriceResponseForMatchingDate() {
-        PriceRepository repository = (productId, brandId) -> List.of(
+        PriceRepository repository = (productId, brandId, applicationDate) -> List.of(
                 new Price(
                         brandId,
                         LocalDateTime.of(2020, 6, 15, 0, 0, 0),

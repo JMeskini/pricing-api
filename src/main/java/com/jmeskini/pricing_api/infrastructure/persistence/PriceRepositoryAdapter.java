@@ -1,5 +1,6 @@
 package com.jmeskini.pricing_api.infrastructure.persistence;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +12,15 @@ public class PriceRepositoryAdapter implements PriceRepository {
     private final SpringDataPriceRepository repository;
 
     @Override
-    public List<Price> findByProductAndBrand(long productId, long brandId) {
-        return repository.findByProductIdAndBrandId(productId, brandId).stream()
+    public List<Price> findByProductAndBrandAndDate(long productId, long brandId, LocalDateTime applicationDate) {
+        return repository
+                .findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(
+                        productId,
+                        brandId,
+                        applicationDate,
+                        applicationDate
+                )
+                .stream()
                 .map(this::toDomain)
                 .collect(Collectors.toList());
     }

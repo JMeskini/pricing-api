@@ -35,15 +35,13 @@ class PriceSelectorTest {
         );
 
         PriceSelector selector = new PriceSelector();
-        LocalDateTime applicationDate = LocalDateTime.of(2020, 6, 14, 16, 0, 0);
-
-        assertThat(selector.selectApplicable(List.of(base, promo), applicationDate))
+        assertThat(selector.selectApplicable(List.of(base, promo)))
                 .contains(promo);
     }
 
     @Test
-    @DisplayName("Returns empty when no price applies for the requested date")
-    void returnsEmptyWhenNoPriceApplies() {
+    @DisplayName("Returns the highest priority price from already-filtered candidates")
+    void returnsHighestPriorityFromFilteredCandidates() {
         Price price = new Price(
                 1L,
                 LocalDateTime.of(2020, 6, 14, 0, 0, 0),
@@ -54,11 +52,19 @@ class PriceSelectorTest {
                 new BigDecimal("35.50"),
                 "EUR"
         );
+        Price higherPriority = new Price(
+                1L,
+                LocalDateTime.of(2020, 6, 14, 0, 0, 0),
+                LocalDateTime.of(2020, 6, 14, 1, 0, 0),
+                2,
+                35455L,
+                1,
+                new BigDecimal("30.50"),
+                "EUR"
+        );
 
         PriceSelector selector = new PriceSelector();
-        LocalDateTime applicationDate = LocalDateTime.of(2020, 6, 14, 2, 0, 0);
-
-        assertThat(selector.selectApplicable(List.of(price), applicationDate))
-                .isEmpty();
+        assertThat(selector.selectApplicable(List.of(price, higherPriority)))
+                .contains(higherPriority);
     }
 }
